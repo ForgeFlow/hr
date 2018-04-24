@@ -1,33 +1,37 @@
-
 .. image:: https://img.shields.io/badge/licence-AGPL--3-blue.svg
    :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
    :alt: License: AGPL-3
 
-Attendance RFID
-==============
+HR Attendance RFID
+==================
 
-This module extends the functionality of managing RFID card readers to support employees attendance integration.
-
-This module is aimed to be combined with an IoT RFID identificator, developed by Comunitea and released on version 10 by Eficent which is under development nowadays.
+This module extends the functionality of HR Attendance in order to allow
+the logging of employee attendances using an RFID based employee
+attendance system.
 
 Configuration
 =============
 
-To configure this module, you need to:
+To use this module, you need to use an external system that calls the method
+'register_attendance' of the model 'hr.employee' passing as parameter the
+code of the RFID card.
 
-#. Go to Attendances -> Configuration -> RFID -> RFID Keys
+Developers of a compatible RFID based employee attendance system should
+familiarise with the outputs of this method and implement proper calls and
+management of responses.
 
-#. Configure a know key for a determinated employee
 
 Usage
 =====
 
-To use this module, you need to:
+#. The HR employee responsible to set up new employees should go to
+   'Attendances -> Manage Attendances -> Employees' and register the
+   RFID card code of each of your employees. You can use an USB plugged
+   RFID reader connected to your computer for this purpose.
+#. The employee should approach her card to the RFID based employee
+   attendance system. It is expected that the system will provide some form
+   of output of the registration event.
 
-#. Go to Attendances -> Configuration -> RFID -> RFID Log
-#. Check Logs.
-#. Go to Attendances -> Manage Attendances -> Attendances
-#. Check Attendances.
 
 Bug Tracker
 ===========
@@ -44,7 +48,9 @@ Contributors
 ------------
 
 * Omar Catiñeira Saavedra <omar@comunitea.com>
-* Héctor Villarreal Ortega <hector.villarreal@eficent.com> (migration to 10.0)
+* Héctor Villarreal Ortega <hector.villarreal@eficent.com>
+* Jordi Ballester Alomar <jordi.ballester@eficent.com>
+
 
 Maintainer
 ----------
