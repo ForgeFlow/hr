@@ -17,7 +17,7 @@
     'depends': [
         'hr_attendance',
     ],
-    'data': ['security/ir.model.access.csv',
-             'views/hr_employee_rfid_access_log_view.xml',
-             'views/hr_employee_view.xml'],
+    'data': [
+        'views/hr_employee_view.xml',
+    ],
 }

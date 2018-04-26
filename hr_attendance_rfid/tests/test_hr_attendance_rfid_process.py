@@ -15,33 +15,23 @@ class TestHrAttendance(TransactionCase):
         self.test_employee.rfid_card_code = self.rfid_card_code
 
     def test_valid_employee(self):
-        res = self.employee_model.register_rfid_attendance_event(
+        res = self.employee_model.register_attendance(
             self.rfid_card_code)
         self.assertTrue('action' in res and res['action'] == 'check_in')
         self.assertTrue('logged' in res and res['logged'])
         self.assertTrue(
             'rfid_card_code' in res and
             res['rfid_card_code'] == self.rfid_card_code)
-
-        logs = self.env['hr.employee.rfid.access.log'].search(
-            [('rfid_card_code', '=', self.rfid_card_code)])
-        self.assertEqual(len(logs), 2)
-        res = self.employee_model.register_rfid_attendance_event(
+        res = self.employee_model.register_attendance(
             self.rfid_card_code)
         self.assertTrue('action' in res and res['action'] == 'check_out')
         self.assertTrue('logged' in res and res['logged'])
-        logs = self.env['hr.employee.rfid.access.log'].search(
-            [('rfid_card_code', '=', self.rfid_card_code)])
-        self.assertEqual(len(logs), 4)
 
     def test_invalid_code(self):
         invalid_code = '029238d'
-        res = self.employee_model.register_rfid_attendance_event(invalid_code)
+        res = self.employee_model.register_attendance(invalid_code)
         self.assertTrue('action' in res and not res['action'])
         self.assertTrue('logged' in res and not res['logged'])
         self.assertTrue(
             'rfid_card_code' in res and
             res['rfid_card_code'] == invalid_code)
-        logs = self.env['hr.employee.rfid.access.log'].search(
-            [('rfid_card_code', '=', invalid_code)])
-        self.assertEqual(len(logs), 1)
