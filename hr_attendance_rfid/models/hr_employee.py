@@ -5,7 +5,7 @@
 
 import logging
 from odoo import api, models, fields, _
-_logger = logging.getLogger('hr_attendance_rfid')
+_logger = logging.getLogger(__name__)
 
 
 class HrEmployee(models.Model):
@@ -32,7 +32,7 @@ class HrEmployee(models.Model):
             'employee_id': False,
             'error_message': '',
             'logged': False,
-            'action': '',
+            'action': 'FALSE',
         }
         employee = self.search([('rfid_card_code', '=', card_code)], limit=1)        
         if employee:
