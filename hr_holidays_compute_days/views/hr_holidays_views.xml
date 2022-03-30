@@ -7,22 +7,26 @@
         <field name="inherit_id" ref="hr_holidays.edit_holiday_new" />
         <field name="arch" type="xml">
             <field name="date_from" position="before">
-                <field name="from_full_day" nolabel="1" class="oe_inline"/>
-                <label string="Full day" class="oe_inline"/>
+                <field name="from_half_day" nolabel="1" class="oe_inline"/>                
+                <label string="Half day" class="oe_inline"/>
+                <field name="from_half_day_am_pm" nolabel="1" class="oe_inline"  attrs="{'invisible': [('from_half_day', '=', False)]}"/>
                 <label string="-" class="oe_inline"/>
-                <field name="to_full_day" nolabel="1" class="oe_inline"/>
-                <label string="Full day" class="oe_inline"/>
+                <field name="to_half_day" nolabel="1" class="oe_inline"/>
+                <label string="Half day" class="oe_inline"/>
+                <field name="to_half_day_am_pm" nolabel="1" class="oe_inline" attrs="{'invisible': [('to_half_day', '=', False)]}"/>
                 <br/>
-                <field name="date_from_full" attrs="{'required':[('type', '=', 'remove')], 'invisible': [('from_full_day', '=', False)]}" class="oe_inline"/>
+            </field>
+            <field name="date_from" position="before">
+                <field name="date_from_full" attrs="{'required':[('type', '=', 'remove')]}" class="oe_inline"/>
             </field>
             <field name="date_from" position="attributes">
-                <attribute name="attrs">{'required':[('type', '=', 'remove')], 'invisible': [('from_full_day', '=', True)]}</attribute>
+                <attribute name="attrs">{'required':[('type', '=', 'remove')], 'invisible': 1}</attribute>
             </field>
             <field name="date_to" position="before">
-                <field name="date_to_full" attrs="{'required':[('type', '=', 'remove')], 'invisible': [('to_full_day', '=', False)]}" class="oe_inline"/>
+                <field name="date_to_full" attrs="{'required':[('type', '=', 'remove')]}" class="oe_inline"/>
             </field>
             <field name="date_to" position="attributes">
-                <attribute name="attrs">{'required':[('type', '=', 'remove')], 'invisible': [('to_full_day', '=', True)]}</attribute>
+                <attribute name="attrs">{'required':[('type', '=', 'remove')], 'invisible': 1}</attribute>
             </field>
             <field name="number_of_days_temp" position="attributes">
                 <attribute name="attrs">{'invisible': [('type', '=', 'remove')]}</attribute>
