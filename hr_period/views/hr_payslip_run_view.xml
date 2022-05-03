@@ -4,7 +4,7 @@
     <record id="hr_payslip_run_form" model="ir.ui.view">
         <field name="name">hr.payslip.run.period.form</field>
         <field name="model">hr.payslip.run</field>
-        <field name="inherit_id" ref="hr_payroll.hr_payslip_run_form" />
+        <field name="inherit_id" ref="payroll.hr_payslip_run_view_form" />
         <field name="priority">1</field>
         <field name="arch" type="xml">
             <field name="name" position="after">
@@ -44,7 +44,7 @@
                 <label for="date_start" string="Date" />
             </xpath>
              <button
-                name="%(hr_payroll.action_hr_payslip_by_employees)d"
+                name="%(payroll.action_hr_payslip_by_employees)d"
                 position="replace"
             >
                 <button
@@ -61,7 +61,7 @@
     <record id="hr_payslip_run_filter" model="ir.ui.view">
         <field name="name">hr.payslip.run.period.search</field>
         <field name="model">hr.payslip.run</field>
-        <field name="inherit_id" ref="hr_payroll.hr_payslip_run_filter" />
+        <field name="inherit_id" ref="payroll.hr_payslip_run_view_search" />
         <field name="arch" type="xml">
             <field name="name" position="after">
                 <field name="company_id" />
@@ -94,7 +94,7 @@
     <record id="hr_payslip_run_tree" model="ir.ui.view">
         <field name="name">hr.payslip.run.period.tree</field>
         <field name="model">hr.payslip.run</field>
-        <field name="inherit_id" ref="hr_payroll.hr_payslip_run_tree" />
+        <field name="inherit_id" ref="payroll.hr_payslip_run_view_tree" />
         <field name="arch" type="xml">
             <field name="date_end" position="after">
                 <field name="date_payment" />
