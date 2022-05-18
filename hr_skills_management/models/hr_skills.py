@@ -15,6 +15,7 @@ class EmployeeSkill(models.Model):
 
     name = fields.Char(related="skill_id.name")
     notes = fields.Html(string="Notes")
+    level_progress = fields.Integer(store=True, group_operator="avg")
 
 
 class SkillType(models.Model):
