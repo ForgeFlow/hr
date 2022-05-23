@@ -140,7 +140,7 @@ class HrHolidays(models.Model):
         """Put start of the day in employee's user timezone, or user timezone
         as fallback.
         """
-        for record in self.filtered('from_full_day'):
+        for record in self.filtered(lambda r: not r.from_half_day):
             if record.date_from_full:
                 tz_name = record.employee_id.user_id.tz or record.env.user.tz
                 dt = fields.Datetime.from_string(record.date_from_full).replace(
