@@ -225,8 +225,8 @@ class HrHolidays(models.Model):
         self.from_full_day = False
         self._inverse_date_from_full()
         # if the leave if for one day just put half day in the to date as well
-        if not self.date_to:
-            self.to_half_day = True
+        #if not self.date_to:
+        #    self.to_half_day = True
         self._onchange_data_hr_holidays_compute_days()
 
     @api.onchange('to_half_day')
@@ -237,8 +237,8 @@ class HrHolidays(models.Model):
         self.to_full_day = False
         self._inverse_date_to_full()
         # if the leave if for one day just put half day in the to date as well
-        if not self.date_from:
-            self.from_half_day = True
+        #if not self.date_from:
+        #    self.from_half_day = True
         self._onchange_data_hr_holidays_compute_days()
 
     @api.onchange('employee_id', 'holiday_status_id')
