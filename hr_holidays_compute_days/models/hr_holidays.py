@@ -243,9 +243,12 @@ class HrHolidays(models.Model):
 
     @api.onchange('employee_id', 'holiday_status_id')
     def _onchange_data_hr_holidays_compute_days(self):
-        if self.date_to and self.date_from and self.date_from <= self.date_to:
-            date_from = fields.Datetime.from_string(self.date_from)
-            date_to = fields.Datetime.from_string(self.date_to)
+        if not self.date_to_full or not self.date_from_full:
+            return
+        # Added replace, so it has time intervals and calculates the half days
+        date_to = fields.Datetime.from_string(self.date_to_full).replace(hour=23, minute=59, second=59, microsecond=999999,)
+        date_from = fields.Datetime.from_string(self.date_from_full).replace(hour=0, minute=0, second=0, microsecond=0,)
+        if date_to and date_from and date_from.date() <= date_to.date():
             # The current user might not be linked to an employee
             # Odoo will handle the error when saving
             if not self.employee_id:
