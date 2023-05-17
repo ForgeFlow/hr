@@ -144,7 +144,7 @@ class HrHolidays(models.Model):
             if record.date_from_full:
                 tz_name = record.employee_id.user_id.tz or record.env.user.tz
                 dt = fields.Datetime.from_string(record.date_from_full).replace(
-                    hour=0, minute=0, second=0, microsecond=0,
+                    hour=1, minute=0, second=0, microsecond=0,
                     tzinfo=tz.gettz(tz_name),
                 ).astimezone(tz.tzutc())
                 record.date_from = fields.Datetime.to_string(dt)
@@ -172,7 +172,7 @@ class HrHolidays(models.Model):
             if record.date_to_full:
                 tz_name = record.employee_id.user_id.tz or record.env.user.tz
                 dt = fields.Datetime.from_string(record.date_to_full).replace(
-                    hour=23, minute=59, second=59, microsecond=999999,
+                    hour=8, minute=0, second=0, microsecond=0,
                     tzinfo=tz.gettz(tz_name),
                 ).astimezone(tz.tzutc())
                 record.date_to = fields.Datetime.to_string(dt)
