@@ -64,6 +64,17 @@ class HrEmployee(models.Model):
             )
         for day_intervals in calendar._iter_work_intervals(
                 from_datetime, to_datetime, leaves=leaves):
+            if self.env.context.get('current_leave', False):
+                current_leave = self.env.context.get('current_leave', False)
+                if current_leave:
+                    # instead of computed hours, that may lead to unwanted results
+                    # we harcode the half day
+                    if current_leave.from_half_day and fields.Datetime.from_string(current_leave.date_from).date() == day_intervals[0][0].date():
+                        days_count += 0.5
+                        continue
+                    if current_leave.to_half_day and fields.Datetime.from_string(current_leave.date_to).date() == day_intervals[-1][-1].date():
+                        days_count += 0.5
+                        continue            
             if self.env.context.get('compute_full_days'):
                 days_count += 1
                 continue
@@ -86,7 +97,7 @@ class HrEmployee(models.Model):
                 timedelta(),
             )
             # We convert hours in days according to calendar "UOM" if present
-            cal_uom = calendar.uom_id.factor or theoric_hours
+            cal_uom = theoric_hours
             days_count += work_time.total_seconds() / 3600 / cal_uom
         # round to be replaced by UOM minutes / seconds
         return round(days_count, 4)
