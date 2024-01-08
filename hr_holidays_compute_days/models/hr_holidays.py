@@ -136,61 +136,53 @@ class HrHolidays(models.Model):
             ).astimezone(tz.gettz(tz_name)).date()
             record.date_to_full = fields.Date.to_string(dt)
 
+
+
     def _inverse_date_from_full(self):
-        """Put start of the day in employee's user timezone, or user timezone
-        as fallback.
-        """
-        for record in self.filtered(lambda r: not r.from_half_day):
-            if record.date_from_full:
-                tz_name = record.employee_id.user_id.tz or record.env.user.tz
-                dt = fields.Datetime.from_string(record.date_from_full).replace(
-                    hour=1, minute=0, second=0, microsecond=0,
-                    tzinfo=tz.gettz(tz_name),
-                ).astimezone(tz.tzutc())
-                record.date_from = fields.Datetime.to_string(dt)
-        for record in self.filtered('from_half_day'):
-            tz_name = record.employee_id.user_id.tz or record.env.user.tz
+        """Set start of the day based on America/New York timezone."""
+        new_york_tz = tz.gettz('America/New_York')
+        for record in self:
             if not record.date_from_full:
-                record.date_from_full = fields.Date.context_today(self)
-            if record.from_half_day_am_pm == "am":
-                dt = fields.Datetime.from_string(record.date_from_full).replace(
-                    hour=8, minute=0, second=0, microsecond=0,
-                    tzinfo=tz.gettz(tz_name),
-                ).astimezone(tz.tzutc())
+                continue
+
+            dt = fields.Datetime.from_string(record.date_from_full).replace(
+                tzinfo=new_york_tz
+            )
+
+            if record.from_half_day:
+                if record.from_half_day_am_pm == "am":
+                    dt = dt.replace(hour=8, minute=0, second=0, microsecond=0)
+                else:
+                    dt = dt.replace(hour=12, minute=0, second=0, microsecond=0)
             else:
-                dt = fields.Datetime.from_string(record.date_from_full).replace(
-                    hour=12, minute=0, second=0, microsecond=0,
-                    tzinfo=tz.gettz(tz_name),
-                ).astimezone(tz.tzutc())
+                dt = dt.replace(hour=8, minute=0, second=0, microsecond=0)
+
+            dt = dt.astimezone(tz.tzutc())
             record.date_from = fields.Datetime.to_string(dt)
 
+
     def _inverse_date_to_full(self):
-        """Put end of the day in employee's user timezone, or user timezone
-        as fallback.
-        """
-        for record in self.filtered(lambda r: not r.to_half_day):
-            if record.date_to_full:
-                tz_name = record.employee_id.user_id.tz or record.env.user.tz
-                dt = fields.Datetime.from_string(record.date_to_full).replace(
-                    hour=8, minute=0, second=0, microsecond=0,
-                    tzinfo=tz.gettz(tz_name),
-                ).astimezone(tz.tzutc())
-                record.date_to = fields.Datetime.to_string(dt)
-        for record in self.filtered('to_half_day'):
-            tz_name = record.employee_id.user_id.tz or record.env.user.tz
+        """Set end of the day based on America/New York timezone."""
+        new_york_tz = tz.gettz('America/New_York')
+        for record in self:
             if not record.date_to_full:
-                record.date_to_full = fields.Date.context_today(self)
-            if record.from_half_day_am_pm == "am":
-                dt = fields.Datetime.from_string(record.date_to_full).replace(
-                    hour=12, minute=0, second=0, microsecond=0,
-                    tzinfo=tz.gettz(tz_name),
-                ).astimezone(tz.tzutc())
+                continue
+
+            dt = fields.Datetime.from_string(record.date_to_full).replace(
+                tzinfo=new_york_tz
+            )
+
+            if record.to_half_day:
+                if record.to_half_day_am_pm == "am":
+                    dt = dt.replace(hour=13, minute=0, second=0, microsecond=0)
+                else:
+                    dt = dt.replace(hour=17, minute=0, second=0, microsecond=0)
             else:
-                dt = fields.Datetime.from_string(record.date_to_full).replace(
-                    hour=16, minute=0, second=0, microsecond=0,
-                    tzinfo=tz.gettz(tz_name),
-                ).astimezone(tz.tzutc())
+                dt = dt.replace(hour=17, minute=0, second=0, microsecond=0)
+
+            dt = dt.astimezone(tz.tzutc())
             record.date_to = fields.Datetime.to_string(dt)
+
 
     @api.onchange('date_from_full', 'from_full_day')
     def _onchange_date_from_full(self):
