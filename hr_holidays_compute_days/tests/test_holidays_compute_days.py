@@ -268,6 +268,8 @@ class TestHolidaysComputeDays(TestHolidaysComputeDaysBase):
     # From 23/12 08:00 to 31/12 10:00
     # Holiday type compute full days = False
     # Should compute 0.5 + 1 + 0 + 1 + 0.5 + 0 + 0 + 0.5 + 0.25 =   3.75
+    # but with this custom approach, days are full, so it should be
+    # Should compute 1 + 1 + 0 + 1 + 1 + 0 + 0 + 1 + 0.25 = 5.25
     def test_fractional_number_days_FTE_80(self):
         holidays = self.HrHolidays.new({
             'date_from': '1946-12-23 08:00:00',
@@ -276,4 +278,23 @@ class TestHolidaysComputeDays(TestHolidaysComputeDaysBase):
             'employee_id': self.employee_be.id,
         })
         holidays._onchange_data_hr_holidays_compute_days()
-        self.assertEqual(holidays.number_of_days_temp, 3.75)
+        self.assertEqual(holidays.number_of_days_temp, 5.25)
+    def test_z_onchange_half_dates(self):
+        """
+        test the time in date from date to and the number of days when half days
+        """
+        holidays = self.HrHolidays.new({
+            'date_from': '1946-12-20',
+            'date_to': '1946-12-21',
+            'from_full_day': False,
+            'to_full_day': False,
+            'from_half_day': True,
+            'to_half_day': True,
+            'employee_id': self.employee_2.id,
+        })
+        holidays._onchange_from_half_day()
+        self.assertEqual(holidays.date_from, '1946-12-20 12:00:00')
+        holidays._onchange_to_half_day()
+        self.assertEqual(holidays.date_to, '1946-12-21 16:00:00')
+        holidays._onchange_data_hr_holidays_compute_days()
+        self.assertEquals(holidays.number_of_days_temp, 1.0)
