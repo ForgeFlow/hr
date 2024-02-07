@@ -69,10 +69,10 @@ class HrEmployee(models.Model):
                 if current_leave:
                     # instead of computed hours, that may lead to unwanted results
                     # we harcode the half day
-                    if current_leave.from_half_day and fields.Datetime.from_string(current_leave.date_from).date() == day_intervals[0][0].date():
+                    if current_leave.from_half_day and current_leave.date_from and fields.Datetime.from_string(current_leave.date_from).date() == day_intervals[0][0].date():
                         days_count += 0.5
                         continue
-                    if current_leave.to_half_day and fields.Datetime.from_string(current_leave.date_to).date() == day_intervals[-1][-1].date():
+                    if current_leave.to_half_day and current_leave.date_to and fields.Datetime.from_string(current_leave.date_to).date() == day_intervals[-1][-1].date():
                         days_count += 0.5
                         continue            
             if self.env.context.get('compute_full_days'):
