@@ -62,7 +62,7 @@ class TestComputeWorkdays(TransactionCase):
         })]})
 
         self.timesheet_sheet.action_timesheet_confirm()
-        self.timesheet_sheet.action_timesheet_done()
+        self.timesheet_sheet.with_context(no_validator_check=True).action_timesheet_done()
 
     def test_timesheet_import(self):
         payslip_dict = {
