@@ -1,33 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
-    <t t-name="ControlPanel">
-        <div class="o_control_panel">
-            <div>
-                <div class="o_cp_top_left">
-                    <ol class="breadcrumb" role="navigation" />
-                </div>
-                <div class="o_cp_top_right">
-                    <div class="o_cp_searchview" role="search">
-                        <t t-if="widget.withSearchBar" t-call="SearchView" />
-                    </div>
-                </div>
-            </div>
-            <div>
-                <div class="o_cp_left">
-                    <div
-                        class="o_cp_buttons"
-                        role="toolbar"
-                        aria-label="Control panel toolbar"
-                    />
-                    <aside class="o_cp_sidebar" />
-                </div>
-            </div>
-        </div>
-    </t>
     <t t-name="HrOrgChartOverview">
-        <div class="custom_control_panel">
-            <t t-call="ControlPanel" />
+        <div class="o_cp_wrapper d-flex flex-column h-100" t-ref="charDiv">
+            <ControlPanel display="controlPanelDisplay">
+                <t t-set-slot="control-panel-always-buttons">
+                    <button id="print-pdf" class="btn btn-primary o-kanban-button-new">
+                        <i class="fa fa-print" /> Print PDF </button>
+                    <button id="zoom-in" class="btn btn-primary o-kanban-button-new">
+                        <i class="fa fa-plus" />
+                    </button>
+                    <button
+                        type="button"
+                        id="toggle-pan"
+                        class="btn o-kanban-button-new"
+                        accesskey="m"
+                    >
+                        <i class="fa fa-arrows" title="Toggle Pan" />
+                    </button>
+                    <button id="zoom-out" class="btn btn-primary o-kanban-button-new">
+                        <i class="fa fa-minus" />
+                    </button>
+                </t>
+            </ControlPanel>
+
+            <!-- Chart content area -->
+            <div id="chart-container" t-ref="chartContainer" class="flex-grow-1" />
         </div>
-        <div id="chart-container" />
     </t>
 </templates>

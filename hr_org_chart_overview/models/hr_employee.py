@@ -41,7 +41,7 @@ class HrEmployee(models.Model):
                 [
                     ("res_model", "=", "hr.employee"),
                     ("res_id", "=", self.id),
-                    ("res_field", "=", "image_512"),
+                    ("res_field", "=", "image_128"),
                 ],
                 limit=1,
             )
